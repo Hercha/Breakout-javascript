@@ -98,9 +98,10 @@
             e.preventDefault();
             if(key === 37) {
                 paddle.left = true;
-            }
-            if(key === 39) {
+            } else if(key === 39) {
                 paddle.right = true;
+            } else if (key === 38 && !gameInPlay) {
+                gameInPlay = true;
             }
             //console.log(key);
         });
@@ -110,8 +111,7 @@
             e.preventDefault();
             if(key === 37) {
                 paddle.left = false;
-            }
-            if(key === 39) {
+            } else if(key === 39) {
                 paddle.right = false;
             }
         });
@@ -122,7 +122,7 @@
             ball.style.display = 'block';
             animationRepeat = requestAnimationFrame(update);
             gameOver = false;
-            gameInPlay = true;
+            gameInPlay = false;
         }
         
         function update() {
@@ -157,11 +157,19 @@
                 ballDir[0] *= -1;  
             }
             if(y > (containerDim.height-20) || y < 0) {
+                if(y > (containerDim.height-20)) {
+                    fallOffEdge();
+                    return;
+                }
                ballDir[1] *= -1;
             }
             
             if(isCollide(ball, paddle)) {
-                console.log("HIT!");
+                //console.log("HIT!");
+                var nDir = ((x - paddle.offsetLeft) - (paddle.offsetWidth / 2))/10;
+                ballDir[0] = nDir;
+                //console.log(nDir);
+                ballDir[1] *= -1;
             }
             
             x += ballDir[0];
@@ -170,6 +178,23 @@
             ball.style.top = y + 'px';
             ball.style.left = x + 'px';
             
+        }
+        
+        function lifeUpdater() {
+            document.querySelector('.lives').innerText = lives;
+        }
+        
+        function stopper() {
+            gameInPlay = false;
+            ballDir[0,-5];
+            waitingOnPaddle();
+            window.cancelAnimationFrame(animationRepeat);
+        }
+        
+        function fallOffEdge() {
+            lives--;
+            lifeUpdater();
+            stopper();
         }
         
         function isCollide(a,b) {
