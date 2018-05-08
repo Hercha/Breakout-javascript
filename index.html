@@ -24,6 +24,7 @@
             top: 50%;
             left: 50%;
             border-radius: 25px;
+            display: none;
         }
         
         .paddle {
@@ -48,6 +49,16 @@
         
         .score, .lives {
             font-size: 3em;
+        }
+        
+        .gameover {
+            position: absolute;
+            text-align: center;
+            color: white;
+            font-size: 3em;
+            line-height: 300px;
+            text-transform: uppercase;
+            width: 100%;
         }
         
     </style>
@@ -106,7 +117,19 @@
         });
         
         function startGame() {
-            console.dir(paddle);
+            //console.dir(paddle);
+            document.querySelector('.gameover').style.display='none';
+            ball.style.display = 'block';
+            animationRepeat = requestAnimationFrame(update);
+            gameOver = false;
+            gameInPlay = true;
+        }
+        
+        function update() {
+            if(gameOver === false) {
+                var pCurrent = paddle.offsetLeft;
+                console.log(pCurrent);
+            }
         }
        
     </script>
