@@ -217,6 +217,15 @@
                 ballDir[1] *= -1;
             }
             
+            var tempBricks = document.querySelectorAll('.brick');
+            for(var tarBrick of tempBricks) {
+                if(isCollide(tarBrick, ball)) {
+                    ballDir[1] *= -1;
+                    tarBrick.parentNode.removeChild(tarBrick);
+                    scoreUpdate(tarBrick.dataset.points);
+                }
+            }
+            
             x += ballDir[0];
             y += ballDir[1];
             
@@ -227,6 +236,11 @@
         
         function lifeUpdater() {
             document.querySelector('.lives').innerText = lives;
+        }
+        
+        function scoreUpdate(num) {
+            score += parseInt(num);
+            document.querySelector('.score').innerText = score;
         }
         
         function stopper() {
