@@ -128,7 +128,15 @@
         function update() {
             if(gameOver === false) {
                 var pCurrent = paddle.offsetLeft;
+                if(paddle.left && pCurrent > 0) {
+                    pCurrent -=5;
+                } else if(paddle.right && pCurrent < (containerDim.width - paddle.offsetWidth)) {
+                    pCurrent +=5;
+                }
+                paddle.style.left = pCurrent + 'px';
                 console.log(pCurrent);
+                
+                animationRepeat = requestAnimationFrame(update);
             }
         }
        
