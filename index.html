@@ -134,10 +134,37 @@
                     pCurrent +=5;
                 }
                 paddle.style.left = pCurrent + 'px';
-                console.log(pCurrent);
-                
+                if(!gameInPlay) {
+                    waitingOnPaddle();
+                } else {
+                    ballMove();
+                }
+                //console.log(pCurrent);
                 animationRepeat = requestAnimationFrame(update);
             }
+        }
+        
+        function waitingOnPaddle() {
+            ball.style.top = (paddle.offsetTop-22) + 'px';
+            ball.style.left = (paddle.offsetLeft+70) + 'px';
+        }
+        
+        function ballMove() {
+            var x = ball.offsetLeft;
+            var y = ball.offsetTop;
+            
+            if(x > (containerDim.width-20) || x < 0) {
+                ballDir[0] *= -1;  
+            }
+            if(y > (containerDim.height-20) || y < 0) {
+               ballDir[1] *= -1;
+            }
+            x += ballDir[0];
+            y += ballDir[1];
+            
+            ball.style.top = y + 'px';
+            ball.style.left = x + 'px';
+            
         }
        
     </script>
